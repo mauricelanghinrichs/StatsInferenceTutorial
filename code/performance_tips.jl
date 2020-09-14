@@ -50,18 +50,21 @@ function divide_v2()
 	end
 	x
 end
-divide_v1()
-divide_v2()
-print(divide_v1())
-@code_warntype divide_v1()
-@code_warntype divide_v2()
 @btime divide_v1()
 @btime divide_v2()
+@code_warntype divide_v1()
+@code_warntype divide_v2()
 
-γ δ
 
-λ
-∝
+
+
+
+
+
+
+
+
+
 ### OLD NOTES BELOW
 ### exercise 01 (type )
 # compute this sum: (1/1)^2 + (1/2)^2 + (1/3)^2 + ... + (1/1000)^2

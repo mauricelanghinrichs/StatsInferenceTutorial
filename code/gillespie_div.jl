@@ -58,9 +58,12 @@ const mean_res = mean(res)
 @btime gillespie_alg(x0, λ, Δt, n)
 @code_warntype gillespie_alg(x0, λ, Δt, n)
 
-# runtime python vs. julia
+
+
+### runtime python vs. julia
 8.5 / 0.04
 
+### additional profiling
 using ProfileView
 const n = 1000000
 @profview gillespie_alg(x0, λ, Δt, n)

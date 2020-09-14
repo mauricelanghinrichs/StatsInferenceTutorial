@@ -33,6 +33,7 @@ begin
 	Pkg.add("Turing"); using Turing
 	Pkg.add("DifferentialEquations"); using DifferentialEquations
 	Pkg.add("JLD"); using JLD
+	Pkg.add("Pluto"); using Pluto
 	Pkg.add("PlutoUI"); using PlutoUI
 	Pkg.add("Plots"); using Plots
 	Pkg.add("StatsPlots"); using StatsPlots
@@ -40,15 +41,12 @@ begin
 end
 
 # ╔═╡ f3c20672-f51c-11ea-3303-cd9b65133594
-md""" # _Statistical inference with Julia_"""
+md""" # _Statistical inference with Julia_
 
-# ╔═╡ 07d67ae4-f51d-11ea-0cbb-03e935785aa8
-md"""
 ###### Group Retreat Heidelberg, Matthias and Maurice, 15. September 2020
+\
+$(PlutoUI.LocalResource("images/julialogo.png", :width => 100))
 """
-
-# ╔═╡ ef2a7010-f547-11ea-264d-fd7f2110f5b5
-md""" $(PlutoUI.LocalResource("images/julialogo.png", :width => 100))"""
 
 # ╔═╡ 2d1f4f7a-f52b-11ea-0c75-cd873132c58d
 begin
@@ -58,7 +56,7 @@ begin
 	md"Poisson parameter: $(poi_slider)"
 end
 
-# ╔═╡ 89dfcfaa-f52b-11ea-3c7b-19f39cc8404c
+# ╔═╡ b2b071e6-f6a4-11ea-2962-593a281afa51
 begin
 	intro_data = rand(Poisson(λintro), 20)
 	histogram(intro_data,
@@ -79,11 +77,8 @@ md"""
 # ╔═╡ b60cf1a8-f525-11ea-1476-4787760c3654
 md"""
 ## Before we start
-"""
 
-# ╔═╡ c5f2f73e-f525-11ea-3d59-d1401f5485f7
-md"""
-_Tutorial requirements_ (the complete process might take ~30 min.)
+_Tutorial requirements_ (the complete process should take <30 min.)
 1. [Julia installation](https://julialang.org/downloads/)
 2. Optional: [Atom and Juno (the Julia editor)](http://docs.junolab.org/latest/man/installation/)
 3. Julia packages listed below:
@@ -93,19 +88,17 @@ _Tutorial requirements_ (the complete process might take ~30 min.)
 Text(sprint(io -> Pkg.status(io=io)))
 
 # ╔═╡ de89e6ba-f5be-11ea-35e1-1dbfda29ca4a
-md"
+md"""
 _How to install and precompile Julia packages_
 1. Start Julia in the terminal (Applications -> Julia-1.5)
 2. Enter “]” to get into Julia package mode (pkg>)
-3. Install a package X by writing “add X” (repeat for each package)
+3. Install a package X by writing “add X” (e.g., "add Plots", repeat for each package)
 4. View all installed packages with “status”
 5. Precompile all packages with “precompile”
 6. Leave the package mode by pressing backspace (julia>)
-7. Import a package by “using X” for a package X
-"
+7. (General info: Import a package by “using X” for a package X)
 
-# ╔═╡ 6b524bfc-f626-11ea-0f8a-af35ffa32081
-md"""_How to start this Pluto notebook_
+_How to start this Pluto notebook_
 
 1. Start Julia in the terminal (Applications -> Julia-1.5)
 2. Import Pluto by typing "using Pluto"
@@ -115,12 +108,72 @@ md"""_How to start this Pluto notebook_
 (Currently, Pluto is supposed to work best with Firefox or Chrome)
 """
 
-# ╔═╡ 03edbb50-f526-11ea-097c-7d606d1b7549
-md""" ## Some valuable links
+# ╔═╡ 38bcd576-f69f-11ea-04b6-5b497457c85a
+md"""
+## Content of this Tutorial
+1) **Introduction to Julia**
+2) **Performance tips and a Gillespie algorithm**
+3) **Differential Equations in Julia**
+4) **Bayesian Inference and Probabilistic Programming**
+5) **_Everything from above combined :)_**
+6) **Further Information/References**
 """
 
-# ╔═╡ 19a9526a-f526-11ea-36ae-83b6663b49dc
+# ╔═╡ 37109e76-f5c1-11ea-196d-99c2ac49a062
+md"## 1. Introduction: What is Julia?
+
+_Goal_: Write code as in Matlab/Python/R which is as fast as C/C++/Fortran
+
+_Basic language principles_
+- Multi-platform via LLVM
+- Multi-paradigm (functional, object-oriented, ...)
+- Multiple dispatch
+- Dynamic with type inference
+- Just-in-time (JIT) compilation
+- Broad metaprogramming features
+- Open source
+"
+
+# ╔═╡ aa95fe4e-f5c2-11ea-08e3-715fd74b8947
+md"""## The Two Language Problem
+
+_Effort and language barriers_
+- prototype code with a language that is _fast to code with_ (Python, R, Matlab)
+- tranfer the prototype code to a language that _runs fast_ (C, C++, Fortran)
+\
+The numpy package in Python (basic array class for fast computing)
+
+$(PlutoUI.LocalResource("images/two_lang_numpy.png", :width => 300))
+\
+\
+A typical Julia package (Turing.jl)
+
+$(PlutoUI.LocalResource("images/two_lang_turing.png", :width => 300))
+\
+
+_Julia solves the two language problem_
+- you can prototype code in Julia
+- you can improve code performance in the same language
+- no language barrier
+
+"""
+
+# ╔═╡ 4f2e9298-f525-11ea-3cd5-49818ec23f80
 md"""
+## Editors/Programming Environments for Julia
+
+_Editors_
+- [Juno (in Atom)](https://junolab.org/) (current standard)
+- [VS Code extension](https://github.com/julia-vscode/julia-vscode) (maybe the future standard)
+
+_Notebooks_
+- [Jupyter Lab/Notebook](https://jupyter.org/) (if you have Jupyter already just install [IJulia](https://github.com/JuliaLang/IJulia.jl) on top)
+- [Pluto.jl](https://github.com/fonsp/Pluto.jl) (used here)
+"""
+
+# ╔═╡ 03edbb50-f526-11ea-097c-7d606d1b7549
+md""" ## Some valuable links
+
 - [Julia Website](https://julialang.org/)
 - [Julia Documentation](https://docs.julialang.org/en/v1/)
 - [Julia Discourse Forum](https://discourse.julialang.org/) (ideal for asking questions!)
@@ -129,27 +182,9 @@ md"""
 - [JuliaAcademy](https://juliaacademy.com/) (free course material)
 """
 
-# ╔═╡ 4f2e9298-f525-11ea-3cd5-49818ec23f80
-md"""
-## Editors/Programming Environments for Julia
-"""
-
-# ╔═╡ 5e77fee2-f525-11ea-0ed9-4b207d607ce7
-md"""
-_Editors_
-- [Juno (in Atom)](https://junolab.org/) (current standard)
-- [VS Code extension](https://github.com/julia-vscode/julia-vscode) (probably the future standard)
-
-_Notebooks_
-- [Jupyter Lab/Notebook](https://jupyter.org/) (if you have Jupyter already just install [IJulia](https://github.com/JuliaLang/IJulia.jl) on top)
-- [Pluto.jl](https://github.com/fonsp/Pluto.jl) (used here)
-"""
-
 # ╔═╡ 08da756c-f51d-11ea-2167-61055a2ba344
-md""" ## Packages and Ecosystems"""
+md""" ## Packages and Ecosystems
 
-# ╔═╡ b603ae4a-f523-11ea-14cf-bd5f25fdad56
-md"""
 Larger ecosystems
 - [SciML](https://github.com/SciML) - _Open Source Scientific Machine Learning_
 - [The Turing Language](https://github.com/TuringLang) - _Bayesian inference with probabilistic programming_
@@ -176,50 +211,6 @@ Notebooks/Visualisation
 - [Plots](https://github.com/JuliaPlots/Plots.jl) - _Powerful convenience for Julia visualizations and data analysis_
 - [Pluto](https://github.com/fonsp/Pluto.jl) - _Lightweight reactive notebooks for Julia_
 - [IJulia](https://github.com/JuliaLang/IJulia.jl) - _Julia kernel for Jupyter_
-"""
-
-# ╔═╡ 37109e76-f5c1-11ea-196d-99c2ac49a062
-md"## What is Julia?"
-
-# ╔═╡ 5bbbf2f2-f5c1-11ea-2759-278d476568ef
-md"""
-_Goal_: Write code as in Matlab/Python/R which is as fast as C/C++/Fortran
-
-_Basic language principles_
-- Multi-platform via LLVM
-- Multi-paradigm (functional, object-oriented, ...)
-- Multiple dispatch
-- Dynamic with type inference
-- Just-in-time (JIT) compilation
-- Broad metaprogramming features
-- Open source
-"""
-
-# ╔═╡ aa95fe4e-f5c2-11ea-08e3-715fd74b8947
-md"## The Two Language Problem"
-
-# ╔═╡ e84fb856-f5c2-11ea-0a3e-03f20635d9b7
-md"""
-_Effort and language barriers_
-- prototype code with a language that is _fast to code with_ (Python, R, Matlab)
-- tranfer the prototype code to a language that _runs fast_ (C, C++, Fortran)
-"""
-
-# ╔═╡ c5628896-f5c2-11ea-3e65-d9f04deb8a90
-md"""The numpy package in Python (basic array class for fast computing)
-
-$(PlutoUI.LocalResource("images/two_lang_numpy.png", :width => 300))"""
-
-# ╔═╡ 0fb63c7c-f5c4-11ea-1eb5-a1b324b18cb8
-md"""A typical Julia package (Turing.jl)
-
-$(PlutoUI.LocalResource("images/two_lang_turing.png", :width => 300))"""
-
-# ╔═╡ 178a7968-f5c4-11ea-2e16-99e2e73fc590
-md"""_Julia solves the two language problem_
-- you can prototype code in Julia
-- you can improve code performance in the same language
-- no language barrier
 """
 
 # ╔═╡ 7575f402-f5d0-11ea-05f4-75eb4096930d
@@ -393,7 +384,7 @@ my_sum([1, 2, 3, 4]);
 my_sum([1.0, 2.0, 3.0, 4.0]);
 
 # ╔═╡ 31f8eaa4-f541-11ea-1cde-39e63f4aebea
-md"## Performance tips"
+md"## 2. Performance tips"
 
 # ╔═╡ 9d41be3a-f541-11ea-3b45-6f931e2ad603
 md"""
@@ -498,15 +489,14 @@ More resources:
 """
 
 # ╔═╡ 3efacc48-f541-11ea-0625-d1212cac1820
-md"""## Gillespie algorithm
+md"""## 2. Gillespie algorithm
 ###### Simple division process, Julia says 'Challenge accepted!'
 In the following we have a stochastic simulation algorithm for a simple division process of a single cell with exponential division times (Gillespie algorithm). 
 
 _Let's check out how Julia code looks like and how fast it is!_
-"""
 
-# ╔═╡ 44227b54-f5fb-11ea-3750-171a76c44435
-md""" $(PlutoUI.LocalResource("images/gillespie.png", :width => 800))"""
+$(PlutoUI.LocalResource("images/gillespie.png", :width => 800))
+"""
 
 # ╔═╡ b1ade5f4-f543-11ea-2a29-1fdc5e7acbcb
 begin 
@@ -579,7 +569,7 @@ Check box to show solution $(@bind gill_sol html"<input type=checkbox >")
 """
 
 # ╔═╡ e4c648e2-f5d8-11ea-22cb-0b702165e418
-md"## DifferentialEquations.jl"
+md"## 3. DifferentialEquations.jl"
 
 # ╔═╡ 06d00ba8-f53e-11ea-0954-437217397654
 md"Set up the ODE model:"
@@ -626,17 +616,15 @@ end
 
 # ╔═╡ 4bb6e490-f533-11ea-269b-ef6f31e561c5
 md"
-## Turing.jl"
+## 4. Turing.jl"
 
 # ╔═╡ ba139b34-f5fd-11ea-3a81-6d7937c50945
-md"###### Bayesian inference with probabilistic programming (Poisson example) 
-"
+md"""###### Bayesian inference with probabilistic programming (Poisson example)
 
-# ╔═╡ 9a759ebc-f5fd-11ea-1167-237e0bce3ac8
-md""" $(PlutoUI.LocalResource("images/bayes.png", :width => 650))"""
+$(PlutoUI.LocalResource("images/bayes.png", :width => 650))
 
-# ╔═╡ be5c9cf6-f53d-11ea-3c12-4fc652a812ab
-md"Let's load some data: (two data sets available data5 and data50)"
+Let's load some data: (two data sets available data5 and data50)
+"""
 
 # ╔═╡ e57c6d64-f5e2-11ea-3c20-a787e4ea581e
 data_poisson_dict = load("data/data_poisson.jld");
@@ -752,16 +740,13 @@ _Constitutive mRNA expression at steady state:_ The stationary/steady state dist
 "
 
 # ╔═╡ 15140a86-f53c-11ea-0c46-35d1d46c2bc3
-md"## Turing.jl and DifferentialEquations.jl"
+md"## 5. Turing.jl and DifferentialEquations.jl"
 
 # ╔═╡ b148839c-f60a-11ea-3059-2f6bf0a75572
-md"###### Simple division process, continued"
+md"""###### Simple division process, continued
+\
+$(PlutoUI.LocalResource("images/gillespie.png", :width => 800))
 
-# ╔═╡ ac510b76-f60a-11ea-0406-3f6a226522e1
-md""" $(PlutoUI.LocalResource("images/gillespie.png", :width => 800))"""
-
-# ╔═╡ 24a6b210-f608-11ea-2bc5-190ea495914f
-md"""
 _What we have learned so far:_
 - Principles of Julia, basic syntax, performance tips
 - How to run Differential Equations in Julia
@@ -914,6 +899,9 @@ end
 # ╔═╡ 51813362-f619-11ea-16f8-2101534d2881
 # plot(chain_div)
 
+# ╔═╡ 8bfcfde4-f6a2-11ea-1d33-7b7d0b1ab648
+md"""## 6. Further Information and References"""
+
 # ╔═╡ ead9e534-f620-11ea-18c6-b356e37fe51a
 md"""
 \
@@ -934,47 +922,50 @@ md"""
 \
 """
 
-# ╔═╡ 94f8863c-f528-11ea-144f-53be3b91a509
-md"""
-## Example formula
-"""
-
-# ╔═╡ a0d7f424-f528-11ea-3231-5948b65e8e51
-md"""
-$ \frac{dx}{dt} = \alpha x $
-"""
-
-# ╔═╡ eddd7ec4-f528-11ea-100d-9fd5d927d6e1
-md"""
-## Example table
-"""
-
-# ╔═╡ f5eb3b2e-f528-11ea-24a7-a385f3cb7b51
-md"""
-Meaning | Variable
-:------ | :--------:
-Number of people | people
-Average number of slices each person eats | avg
-Number of slices on a piece of pizza | slices
-"""
-
-# ╔═╡ 0c07be96-f529-11ea-0a82-69a92aafdef4
-md"""
-## Example box
-"""
-
-# ╔═╡ 221a4fbe-f529-11ea-0ac5-b99442ed5851
-pizzas=2
-
-# ╔═╡ 01cd0ae8-f52a-11ea-0d2f-6f815904fbad
+# ╔═╡ 135fff12-f69f-11ea-3f00-45aa2f5c340b
 begin
+	md"""### Presenter's notes
+	
+	_Time management_
+	1) Introduction to Julia **18 min.**
+	2) Performance tips and a Gillespie algorithm **18 min.**
+	3) Differential Equations in Julia **18 min.**
+	4) Bayesian Inference and Probabilistic Programming **18 min.**
+	5) _Everything from above combined :)_ **18 min.**
+	6) Further Information/References **0 min.**
+	7) Total = 5 * 18 min. = 90 min.
 
+	_Example formula_
+	$ \frac{dx}{dt} = \alpha x $
+
+	_Example table_
+
+	Meaning | Variable
+	:------ | :--------:
+	Number of people | people
+	Average number of slices each person eats | avg
+	Number of slices on a piece of pizza | slices
+
+	_Example box_
+	"""
+end
+
+# ╔═╡ 30f297be-f6a3-11ea-0509-6db3c3648a8b
+begin 
 	almost(text) = Markdown.MD(Markdown.Admonition("warning", " ", [text]));
 
 
 	keep_working(text=md"The answer is not quite right.") = Markdown.MD(Markdown.Admonition("danger", "", [text]));
 
 	correct(text=md"Great! You got the right answer! Let's move on to the next section.") = Markdown.MD(Markdown.Admonition("correct", "Solution", [text]));
+	
+	pizzas=4
+	
+	if pizzas == 4
+		correct(md"Yes that is right, that's a lot of pizza! Excellent, you figured out we need to round up the number of pizzas!")
+	else
+		keep_working()
+	end
 end
 
 # ╔═╡ 13716104-f5e8-11ea-0c9f-ef295bf6d732
@@ -1027,33 +1018,24 @@ else
 	almost(md"You will do it!")
 end
 
-# ╔═╡ 1370af3a-f529-11ea-0822-6d2f60bf2607
-if pizzas == 4
-	correct(md"Yes that is right, that's a lot of pizza! Excellent, you figured out we need to round up the number of pizzas!")
-else
-	keep_working()
-end
-
 # ╔═╡ 99c902ca-f52a-11ea-29c7-13394ff733c5
-md"""
-## Example input types
-"""
+begin
+	md"""
+	_Example input types_
 
-# ╔═╡ acb37f46-f52a-11ea-303f-73d7d384c723
-md"""
-`a = ` $(@bind a html"<input type=range >")
+	`a = ` $(@bind a html"<input type=range >")
 
-`b = ` $(@bind b html"<input type=text >")
+	`b = ` $(@bind b html"<input type=text >")
 
-`c = ` $(@bind c html"<input type=button value='Click'>")
+	`c = ` $(@bind c html"<input type=button value='Click'>")
 
-`d = ` $(@bind d html"<input type=checkbox >")
+	`d = ` $(@bind d html"<input type=checkbox >")
 
-`e = ` $(@bind e html"<select><option value='one'>First</option><option value='two'>Second</option></select>")
+	`e = ` $(@bind e html"<select><option value='one'>First</option><option value='two'>Second</option></select>")
 
-`f = ` $(@bind f html"<input type=color >")
-
-"""
+	`f = ` $(@bind f html"<input type=color >")
+	"""
+end
 
 # ╔═╡ b2e0752c-f52a-11ea-0a58-df9764cfb38c
 (a, b, c, d, e, f)
@@ -1063,29 +1045,18 @@ md"""
 # ╟─ba641ca0-f678-11ea-2517-4f85ea4d3423
 # ╟─3d9f3eec-f665-11ea-2b71-678afc915989
 # ╟─f3c20672-f51c-11ea-3303-cd9b65133594
-# ╟─07d67ae4-f51d-11ea-0cbb-03e935785aa8
-# ╟─ef2a7010-f547-11ea-264d-fd7f2110f5b5
 # ╟─2d1f4f7a-f52b-11ea-0c75-cd873132c58d
-# ╟─89dfcfaa-f52b-11ea-3c7b-19f39cc8404c
+# ╟─b2b071e6-f6a4-11ea-2962-593a281afa51
 # ╟─debd8066-f52e-11ea-03d7-55093d4d50ff
 # ╟─b60cf1a8-f525-11ea-1476-4787760c3654
-# ╟─c5f2f73e-f525-11ea-3d59-d1401f5485f7
 # ╟─fd8a6856-f5bd-11ea-0394-655187f55a4a
 # ╟─de89e6ba-f5be-11ea-35e1-1dbfda29ca4a
-# ╟─6b524bfc-f626-11ea-0f8a-af35ffa32081
-# ╟─03edbb50-f526-11ea-097c-7d606d1b7549
-# ╟─19a9526a-f526-11ea-36ae-83b6663b49dc
-# ╟─4f2e9298-f525-11ea-3cd5-49818ec23f80
-# ╟─5e77fee2-f525-11ea-0ed9-4b207d607ce7
-# ╟─08da756c-f51d-11ea-2167-61055a2ba344
-# ╟─b603ae4a-f523-11ea-14cf-bd5f25fdad56
+# ╟─38bcd576-f69f-11ea-04b6-5b497457c85a
 # ╟─37109e76-f5c1-11ea-196d-99c2ac49a062
-# ╟─5bbbf2f2-f5c1-11ea-2759-278d476568ef
 # ╟─aa95fe4e-f5c2-11ea-08e3-715fd74b8947
-# ╟─e84fb856-f5c2-11ea-0a3e-03f20635d9b7
-# ╟─c5628896-f5c2-11ea-3e65-d9f04deb8a90
-# ╟─0fb63c7c-f5c4-11ea-1eb5-a1b324b18cb8
-# ╟─178a7968-f5c4-11ea-2e16-99e2e73fc590
+# ╟─4f2e9298-f525-11ea-3cd5-49818ec23f80
+# ╟─03edbb50-f526-11ea-097c-7d606d1b7549
+# ╟─08da756c-f51d-11ea-2167-61055a2ba344
 # ╟─7575f402-f5d0-11ea-05f4-75eb4096930d
 # ╟─82b251da-f5d0-11ea-1b55-23b0c17fb54b
 # ╠═b5198710-f5d0-11ea-3c86-9506e4759964
@@ -1150,7 +1121,6 @@ md"""
 # ╟─cfe99310-f5f2-11ea-1448-29fede30e23b
 # ╟─7d4a47d8-f542-11ea-1f7d-53ab0e4ff0a1
 # ╟─3efacc48-f541-11ea-0625-d1212cac1820
-# ╟─44227b54-f5fb-11ea-3750-171a76c44435
 # ╠═b1ade5f4-f543-11ea-2a29-1fdc5e7acbcb
 # ╟─118f1fac-f5f7-11ea-21ec-431225a36961
 # ╠═22e5cb2a-f5f7-11ea-3bc2-678184795816
@@ -1168,8 +1138,6 @@ md"""
 # ╟─371a5018-f53c-11ea-336e-c3b7cca672ca
 # ╟─4bb6e490-f533-11ea-269b-ef6f31e561c5
 # ╟─ba139b34-f5fd-11ea-3a81-6d7937c50945
-# ╟─9a759ebc-f5fd-11ea-1167-237e0bce3ac8
-# ╟─be5c9cf6-f53d-11ea-3c12-4fc652a812ab
 # ╠═e57c6d64-f5e2-11ea-3c20-a787e4ea581e
 # ╠═6c685eda-f533-11ea-3493-c5310df8c643
 # ╟─4a67c670-f533-11ea-16ab-7722dbb259e0
@@ -1189,8 +1157,6 @@ md"""
 # ╟─f28a092c-f606-11ea-0970-87679e72268a
 # ╟─15140a86-f53c-11ea-0c46-35d1d46c2bc3
 # ╟─b148839c-f60a-11ea-3059-2f6bf0a75572
-# ╟─ac510b76-f60a-11ea-0406-3f6a226522e1
-# ╟─24a6b210-f608-11ea-2bc5-190ea495914f
 # ╟─320f6e6c-f53e-11ea-2ddd-93d646f77c70
 # ╠═a98db496-f60e-11ea-2c6f-cdab1fdb9bdd
 # ╟─438e9380-f60f-11ea-1d92-83ee6cd05bd6
@@ -1209,16 +1175,10 @@ md"""
 # ╟─68611d20-f616-11ea-1a48-ff9b9b125b24
 # ╟─b5967680-f61b-11ea-29ff-e151fd817baf
 # ╠═51813362-f619-11ea-16f8-2101534d2881
+# ╠═8bfcfde4-f6a2-11ea-1d33-7b7d0b1ab648
 # ╟─ead9e534-f620-11ea-18c6-b356e37fe51a
 # ╟─030c9e10-f61e-11ea-2080-1325c8e8cd3b
-# ╟─94f8863c-f528-11ea-144f-53be3b91a509
-# ╟─a0d7f424-f528-11ea-3231-5948b65e8e51
-# ╟─eddd7ec4-f528-11ea-100d-9fd5d927d6e1
-# ╟─f5eb3b2e-f528-11ea-24a7-a385f3cb7b51
-# ╟─0c07be96-f529-11ea-0a82-69a92aafdef4
-# ╠═221a4fbe-f529-11ea-0ac5-b99442ed5851
-# ╟─01cd0ae8-f52a-11ea-0d2f-6f815904fbad
-# ╟─1370af3a-f529-11ea-0822-6d2f60bf2607
+# ╟─135fff12-f69f-11ea-3f00-45aa2f5c340b
+# ╟─30f297be-f6a3-11ea-0509-6db3c3648a8b
 # ╟─99c902ca-f52a-11ea-29c7-13394ff733c5
-# ╟─acb37f46-f52a-11ea-303f-73d7d384c723
-# ╠═b2e0752c-f52a-11ea-0a58-df9764cfb38c
+# ╟─b2e0752c-f52a-11ea-0a58-df9764cfb38c
