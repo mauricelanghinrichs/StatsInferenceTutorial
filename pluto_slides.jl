@@ -13,22 +13,31 @@ macro bind(def, element)
     end
 end
 
+# ╔═╡ 350c6846-f52e-11ea-2c8e-69d7aaadebbe
+html"<button onclick=present()>Presentation mode</button>"
+
+# ╔═╡ ba641ca0-f678-11ea-2517-4f85ea4d3423
+begin
+	# we set up a clean package environment
+	# (here and in the next cell)
+	import Pkg
+	Pkg.activate(mktempdir())
+end
+
 # ╔═╡ 3d9f3eec-f665-11ea-2b71-678afc915989
 begin
 	# import packages
-	using Pkg
-	using Distributions
-	using Turing
-	using DifferentialEquations
-	using JLD
-	using PlutoUI
-	using Plots
-	using StatsPlots
-	using BenchmarkTools
+	# (if packages are already installed, the globally
+	# installed version will be used automatically)
+	Pkg.add("Distributions"); using Distributions
+	Pkg.add("Turing"); using Turing
+	Pkg.add("DifferentialEquations"); using DifferentialEquations
+	Pkg.add("JLD"); using JLD
+	Pkg.add("PlutoUI"); using PlutoUI
+	Pkg.add("Plots"); using Plots
+	Pkg.add("StatsPlots"); using StatsPlots
+	Pkg.add("BenchmarkTools"); using BenchmarkTools
 end
-
-# ╔═╡ 350c6846-f52e-11ea-2c8e-69d7aaadebbe
-html"<button onclick=present()>Presentation mode</button>"
 
 # ╔═╡ f3c20672-f51c-11ea-3303-cd9b65133594
 md""" # _Statistical inference with Julia_"""
@@ -848,10 +857,10 @@ begin
 
 		# save_everystep=false provides only the last time point
 		prob = remake(prob_div, p=[λest])
-		predicted = solve(prob,Tsit5(), save_everystep=false)
+		μdiv = solve(prob,Tsit5(), save_everystep=false)
 
 		for i in 1:length(gill_data)
-			gill_data[i] ~ Normal(predicted[2][1], σdiv)
+			gill_data[i] ~ Normal(μdiv[2][1], σdiv)
 		end
 	end
 end;
@@ -1051,6 +1060,7 @@ md"""
 
 # ╔═╡ Cell order:
 # ╟─350c6846-f52e-11ea-2c8e-69d7aaadebbe
+# ╟─ba641ca0-f678-11ea-2517-4f85ea4d3423
 # ╟─3d9f3eec-f665-11ea-2b71-678afc915989
 # ╟─f3c20672-f51c-11ea-3303-cd9b65133594
 # ╟─07d67ae4-f51d-11ea-0cbb-03e935785aa8
