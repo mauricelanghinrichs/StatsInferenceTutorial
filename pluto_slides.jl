@@ -759,7 +759,7 @@ begin
 end
 
 # ╔═╡ 16956c34-f5db-11ea-35d6-37965c71b5d6
-md"###### Exercise: change the Gamma prior to an Uniform prior! Which kind of uniform prior is a good choice?"
+md"###### Exercise: Change the Gamma prior to an Uniform prior! Which kind of uniform prior is a good choice?"
 
 # ╔═╡ 7f361ad8-f5e0-11ea-3d76-0b801f0ed798
 md"""
@@ -769,7 +769,7 @@ Check box to show solution $(@bind turing_sol html"<input type=checkbox >")
 # ╔═╡ f28a092c-f606-11ea-0970-87679e72268a
 md"###### Some theoretical background for this example
 _Using Bayesian inference: How to learn something about a parameter θ of a model M given some data D?_ We first interpret _θ_ and _D_ as random variables. We then incorporate (subjective) prior knowledge about _θ_ as a probability distribution _p(θ)_ (the 'prior'). Our goal is now to calculate the 'posterior' _p(θ|D)_ (the new information for _θ_ given the data _D_). To get this we use Bayes' rule:
-$ p(\theta | D) = \frac{p(D|\theta) \cdot p(\theta)}{p(D)} $ (in words, _posterior_ = _likelihood_ x _prior_ / _evidence_ ).\
+$ p(\theta | D) = \frac{p(D|\theta) \cdot p(\theta)}{p(D)} $ (in words, _posterior_ = _likelihood_ x _prior_ / _evidence_ ).
 
 _What is probabilistic programming?_ Probabilistic programming is a programming paradigm in which probabilistic models are specified and inference for these models is performed automatically. It represents an attempt to unify probabilistic modeling and traditional general purpose programming in order to make the former easier and more widely applicable (ref: [Wiki](https://en.wikipedia.org/wiki/Probabilistic_programming)).
 
@@ -786,8 +786,8 @@ $(PlutoUI.LocalResource("images/gillespie.png", :width => 800))
 
 _What we have learned so far:_
 - Principles of Julia, basic syntax, performance tips
-- How to run Differential Equations in Julia
 - How to Gillespie-simulate a simple cell division process
+- How to run Differential Equations in Julia
 - How to estimate model parameters using Turing
 
 _Now let's bring it all together! Goal of this last part:_
@@ -797,7 +797,7 @@ _Now let's bring it all together! Goal of this last part:_
 """
 
 # ╔═╡ 320f6e6c-f53e-11ea-2ddd-93d646f77c70
-md"**1.** Create some _in silico_ data:"
+md"**1.** Create some _in silico_ data (with our 'true' parameter value for λ):"
 
 # ╔═╡ a98db496-f60e-11ea-2c6f-cdab1fdb9bdd
 begin
@@ -865,7 +865,8 @@ Check box to show solution $(@bind div_check_sol2 html"<input type=checkbox >")
 """
 
 # ╔═╡ 420e7070-f614-11ea-155a-c18fc549f2cd
-# priors
+# priors 
+# (used for plotting, should be identical to priors in our Tuing model)
 begin
 	λest_prior = Uniform(0.0, 4.0)
 	σ_div_prior = Uniform(0, 800)
@@ -1128,22 +1129,22 @@ end
 
 # ╔═╡ 7cc5fd84-f5e0-11ea-1391-f7e79d3406eb
 if turing_sol
-	correct(md"In the box above you can replace `λprior = Gamma(gamma_alpha, 1)`
-		with `λprior = Uniform(0, 20)`. `0` and `20` are possible choices. What is a good choice? Our only prior knowledge is that mRNA numbers are non-negative, so `0` is reasonable as lower bound. For the upper bound we don't have that much info, so maybe take something large compared to the data outcomes (e.g., 20). To see what would happen if you constrain the prior too much, enter `Uniform(0, 5)` for example.")
+	correct(md"In the box above you can replace `λ_poi_prior = Gamma(gamma_α, 1)`
+		with `λ_poi_prior = Uniform(0, 20)`. `0` and `20` are possible choices. What is a good choice? Our only prior knowledge is that mRNA numbers are non-negative, so `0` is reasonable as lower bound. For the upper bound we don't have that much info, so maybe take something large compared to the data outcomes (e.g., 20). To see what would happen if you constrain the prior too much, enter `Uniform(0, 5)` for example.")
 else
 	almost(md"You will do it!")
 end
 
 # ╔═╡ 6115aa3c-f6bf-11ea-14b7-0568795a08d7
 if div_check_sol1
-	correct(md"For the mean cell numbers we have simple linear exponential growth: `du[1] = θ[1] * u[1]` will do it.")
+	correct(md"For the mean cell numbers we have simple linear ODE, modelling exponential growth: `du[1] = θ[1] * u[1]` will do it. (In mathematical terms, this is $\frac{\textrm{d}x(t)}{\textrm{d}t} = \lambda \cdot x(t)$.)")
 else
 	almost(md"You will do it!")
 end
 
 # ╔═╡ 0da2224a-f6c4-11ea-1b3e-bd9dbf04ee57
 if div_check_sol2
-	correct(md"For a normal error model we make use of the Normal distribution with mean parameter `μ` and standard deviation `σ`. The mean comes from our ODE solution; the standard deviation is estimated as part of our model. In total you can use this code: `Normal(μdiv[2][1], σdiv)` and the inference should start running. (The weird indexing in μdiv[2][1] is just to read out the mean cell numbers of our ODE solution.)")
+	correct(md"For a normal error model we make use of the Normal distribution with mean parameter `μ` and standard deviation `σ`. The mean comes from our ODE solution; the standard deviation is estimated as part of our model. To implement this, you can use this code: `Normal(μdiv[2][1], σdiv)`. Then the inference should start running. (The weird indexing in `μdiv[2][1]` is just to read out the mean cell numbers of our ODE solution.)")
 else
 	almost(md"You will do it!")
 end
