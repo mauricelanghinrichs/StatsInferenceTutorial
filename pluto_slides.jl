@@ -115,7 +115,7 @@ md"""
 2) **Performance tips and a Gillespie algorithm**
 3) **Differential Equations in Julia**
 4) **Bayesian Inference and Probabilistic Programming**
-5) **_Everything from above combined :)_**
+5) **_Everything from above, just combined :)_**
 6) **Further Information/References**
 """
 
@@ -603,7 +603,7 @@ begin
 end
 
 # ╔═╡ 469d90cc-f6bd-11ea-25d0-5d91fb1b390e
-[α, β, γ, δ]
+[α, β, γ, δ];
 
 # ╔═╡ 3169ab5a-f53c-11ea-20c7-4d9c8a6755ed
 begin
@@ -622,8 +622,9 @@ end
 
 # ╔═╡ 973c748a-f6b8-11ea-35a3-afd13d5cdc20
 md"###### Exercise: 
-- Which variable is prey? Which is predator? 
-- What could the parameters _α_, _β_, _γ_ and _δ_ mean?"
+- **Which variable is prey? Which is predator?**
+- **What do the parameters _α_, _β_, _γ_ and _δ_ mean biologically?**
+"
 
 # ╔═╡ 6a3ffd6a-f6ba-11ea-21f7-7db8dbd4c2a8
 md"""
@@ -796,7 +797,7 @@ _Now let's bring it all together! Goal of this last part:_
 """
 
 # ╔═╡ 320f6e6c-f53e-11ea-2ddd-93d646f77c70
-md"Create some _in silico_ data:"
+md"**1.** Create some _in silico_ data:"
 
 # ╔═╡ a98db496-f60e-11ea-2c6f-cdab1fdb9bdd
 begin
@@ -819,11 +820,20 @@ begin
 end
 
 # ╔═╡ f81e5ba4-f610-11ea-2c71-d58314c78178
-md"Build an ODE model"
+md"**2.** Build an ODE model:
+
+###### Exercise: Complete the function `simple_div_ode` (below) with the correct ODE model!
+"
+
+# ╔═╡ 7a4625aa-f6be-11ea-2e78-0dbb649d93c2
+md"""
+Check box to show solution $(@bind div_check_sol1 html"<input type=checkbox >")
+"""
 
 # ╔═╡ 029e6272-f611-11ea-2790-89643a23244b
 function simple_div_ode(du, u, θ, t)
-    du[1] = θ[1] * u[1] # dx =
+    ### ADD YOUR CODE HERE (replace nothing)
+	nothing
 end;
 
 # ╔═╡ 3fa255be-f611-11ea-351f-ff1c61d0a44c
@@ -836,7 +846,7 @@ end;
 # ╔═╡ c592c872-f611-11ea-2a6c-3f59da5d4970
 begin
 	plot(sol_div, alpha=0.3, legend = false, linewidth=4,
-        xlabel="Time", ylabel="Cell number", label="Mean model");
+        xlabel="Time", ylabel="Cell number", label="Mean model (true λ)");
 	scatter!([timespan for i in 1:100], gill_data, c=:dodgerblue,
 			xlim=(0, timespan*1.1), ylim=(0, maximum(gill_data)*1.2),
 			ylabel="Cell number", xlabel="Time", label="Data",
@@ -845,7 +855,14 @@ begin
 end
 
 # ╔═╡ 75f975b2-f612-11ea-1acf-9f0e13327774
-md"Setup the Turing model"
+md"**3.** Setup the Turing model:
+
+###### Exercise (for the experts): Complete the Turing model below, assuming a Normal/Gaussian error model for our likelihood!"
+
+# ╔═╡ 0709c758-f6c4-11ea-1167-09a125771539
+md"""
+Check box to show solution $(@bind div_check_sol2 html"<input type=checkbox >")
+"""
 
 # ╔═╡ 420e7070-f614-11ea-155a-c18fc549f2cd
 # priors
@@ -881,13 +898,17 @@ begin
 		μdiv = solve(prob,Tsit5(), save_everystep=false)
 
 		for i in 1:length(gill_data)
-			gill_data[i] ~ Normal(μdiv[2][1], σdiv)
+			gill_data[i] ~ nothing ### ADD YOUR CODE HERE (replace nothing)
 		end
 	end
 end;
 
 # ╔═╡ 7ba8de66-f61d-11ea-1a1c-c5e3e7b0ef54
-md"Run Bayesian inference"
+md"**4.** Bayesian inference:
+
+_Enjoy fast Julia code for fitting an ODE model with full Bayesian inference in just under one second!_ :)
+
+_(Note: We use a gradient-based sampler; automatic differentiation is carried through the complete Turing model including our ODE, which makes this fast)_"
 
 # ╔═╡ c91c64d8-f613-11ea-01bd-c55b35610e15
 chain_div = sample(simple_div_fit(gill_data), NUTS(.65), 1000);
@@ -1113,6 +1134,20 @@ else
 	almost(md"You will do it!")
 end
 
+# ╔═╡ 6115aa3c-f6bf-11ea-14b7-0568795a08d7
+if div_check_sol1
+	correct(md"For the mean cell numbers we have simple linear exponential growth: `du[1] = θ[1] * u[1]` will do it.")
+else
+	almost(md"You will do it!")
+end
+
+# ╔═╡ 0da2224a-f6c4-11ea-1b3e-bd9dbf04ee57
+if div_check_sol2
+	correct(md"For a normal error model we make use of the Normal distribution with mean parameter `μ` and standard deviation `σ`. The mean comes from our ODE solution; the standard deviation is estimated as part of our model. In total you can use this code: `Normal(μdiv[2][1], σdiv)` and the inference should start running. (The weird indexing in μdiv[2][1] is just to read out the mean cell numbers of our ODE solution.)")
+else
+	almost(md"You will do it!")
+end
+
 # ╔═╡ 99c902ca-f52a-11ea-29c7-13394ff733c5
 begin
 	md"""
@@ -1271,10 +1306,14 @@ end
 # ╠═a98db496-f60e-11ea-2c6f-cdab1fdb9bdd
 # ╟─438e9380-f60f-11ea-1d92-83ee6cd05bd6
 # ╟─f81e5ba4-f610-11ea-2c71-d58314c78178
+# ╟─7a4625aa-f6be-11ea-2e78-0dbb649d93c2
+# ╟─6115aa3c-f6bf-11ea-14b7-0568795a08d7
 # ╠═029e6272-f611-11ea-2790-89643a23244b
 # ╠═3fa255be-f611-11ea-351f-ff1c61d0a44c
 # ╟─c592c872-f611-11ea-2a6c-3f59da5d4970
 # ╟─75f975b2-f612-11ea-1acf-9f0e13327774
+# ╟─0709c758-f6c4-11ea-1167-09a125771539
+# ╟─0da2224a-f6c4-11ea-1b3e-bd9dbf04ee57
 # ╠═420e7070-f614-11ea-155a-c18fc549f2cd
 # ╟─9aa70686-f614-11ea-2767-39ec8e428137
 # ╟─2e082e5c-f616-11ea-1e64-c55552c523df
