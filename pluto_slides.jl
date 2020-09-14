@@ -158,75 +158,70 @@ _Julia solves the two language problem_
 
 """
 
-# ╔═╡ 4f2e9298-f525-11ea-3cd5-49818ec23f80
-md"""
-## Editors/Programming Environments for Julia
-
-_Editors_
-- [Juno (in Atom)](https://junolab.org/) (current standard)
-- [VS Code extension](https://github.com/julia-vscode/julia-vscode) (maybe the future standard)
-
-_Notebooks_
-- [Jupyter Lab/Notebook](https://jupyter.org/) (if you have Jupyter already just install [IJulia](https://github.com/JuliaLang/IJulia.jl) on top)
-- [Pluto.jl](https://github.com/fonsp/Pluto.jl) (used here)
-"""
-
-# ╔═╡ 03edbb50-f526-11ea-097c-7d606d1b7549
-md""" ## Some valuable links
-
-- [Julia Website](https://julialang.org/)
-- [Julia Documentation](https://docs.julialang.org/en/v1/)
-- [Julia Discourse Forum](https://discourse.julialang.org/) (ideal for asking questions!)
-- [A concise Julia tutorial](https://syl1.gitbook.io/julia-language-a-concise-tutorial/)
-- [JuliaPro from JuliaComputing](https://juliacomputing.com/products/juliapro) (like a conda installation for Python)
-- [JuliaAcademy](https://juliaacademy.com/) (free course material)
-"""
-
-# ╔═╡ 08da756c-f51d-11ea-2167-61055a2ba344
-md""" ## Packages and Ecosystems
-
-Larger ecosystems
-- [SciML](https://github.com/SciML) - _Open Source Scientific Machine Learning_
-- [The Turing Language](https://github.com/TuringLang) - _Bayesian inference with probabilistic programming_
-- [Flux](https://github.com/FluxML/Flux.jl) - _Pure-Julia approach to machine learning with Julia's native GPU and AD support_
-- [JuliaStats](https://github.com/JuliaStats) - _Statistics and Machine Learning made easy in Julia_
-- [BioJulia](https://github.com/BioJulia) - _Bioinformatics and Computational Biology in Julia_
-- [JuliaGraphs](https://github.com/JuliaGraphs) - _Graph modeling and analysis packages for Julia_
-- [JuMP](https://github.com/jump-dev/JuMP.jl) - _Modeling language for Mathematical Optimization_
-- [JuliaIO](https://github.com/JuliaIO) - _Group for a unified IO infrastructure_
-
-More particular packages (sometimes part of ecosystems above)
-- [DifferentialEquations](https://github.com/SciML/DifferentialEquations.jl) - _Multi-language suite for high-performance solvers of differential equations_
-- [DataFrames](https://github.com/JuliaData/DataFrames.jl) - _In-memory tabular data in Julia_
-- [Distributions](https://github.com/JuliaStats/Distributions.jl) - _Julia package for probability distributions and associated functions_
-- [Zygote](https://github.com/FluxML/Zygote.jl) - _next-gen automatic differentiation (AD) system for source-to-source AD in Julia_
-- [KissABC](https://github.com/JuliaApproxInference/KissABC.jl) - _Pure julia implementation for efficient Approximate Bayesian Computation_
-- [NestedSamplers](https://github.com/TuringLang/NestedSamplers.jl) - _Implementations of single and multi-ellipsoid nested sampling_
-
-Performance packages
-- [BenchmarkTools](https://github.com/JuliaCI/BenchmarkTools.jl) - _A benchmarking framework for the Julia language_
-- [ProfileView](https://github.com/timholy/ProfileView.jl) - _Visualization of Julia profiling data_
-
-Notebooks/Visualisation
-- [Plots](https://github.com/JuliaPlots/Plots.jl) - _Powerful convenience for Julia visualizations and data analysis_
-- [Pluto](https://github.com/fonsp/Pluto.jl) - _Lightweight reactive notebooks for Julia_
-- [IJulia](https://github.com/JuliaLang/IJulia.jl) - _Julia kernel for Jupyter_
-"""
-
 # ╔═╡ 7575f402-f5d0-11ea-05f4-75eb4096930d
-md"## Basic syntax"
+md"## Basic syntax
 
-# ╔═╡ 82b251da-f5d0-11ea-1b55-23b0c17fb54b
-md"_Arrays and indexing_ (In Julia indexing starts at 1!)"
+###### Getting help
 
-# ╔═╡ b5198710-f5d0-11ea-3c86-9506e4759964
-my_arr1 = [4, 5, 6];
+Precede unknown object/expression with a question mark (`?`) to see the docs (Pluto has Live docs for this)"
 
-# ╔═╡ e3a77844-f5d0-11ea-3264-f39d4317a0af
-my_arr1[2];
+# ╔═╡ fb7d2fc8-f6b5-11ea-2d3d-c566c4292a4c
+md"###### Some basic data structures
+
+1. _Tuples_ (ordered, immutable)
+2. _Named Tuples_ (ordered, immutable)
+3. _Arrays_ (ordered, mutable)
+4. _Dictonaries_ (unordered, mutable)
+
+_Tuples_ and _Named Tuples_ are constructed using paratheses"
+
+# ╔═╡ 065885ca-f6b4-11ea-39ee-bbca217e81d7
+myTuple = (3, 1, 4);
+
+# ╔═╡ 0766c508-f6b4-11ea-2776-d100ed8c4b7e
+myNamedTuple = (foo = 1, bar = 5, baz = 9);
+
+# ╔═╡ 1c0dde9c-f6b4-11ea-38d9-af2e85e6dad9
+md"Elements are accessed by position (**In Julia indexing starts at 1!**)"
+
+# ╔═╡ 2341a2b6-f6b4-11ea-3946-97e162f449ce
+myTuple[2];
+
+# ╔═╡ 280b5d30-f6b4-11ea-32bf-4dd537092235
+myNamedTuple[3];
+
+# ╔═╡ 5fd479ec-f6b4-11ea-199f-630771b2dac3
+md"_Named Tuples_ can additionally be accessed by name"
+
+# ╔═╡ 63bad2e0-f6b4-11ea-24dc-c93e9fec1259
+myNamedTuple[:baz];
+
+# ╔═╡ 6ef88076-f6b4-11ea-2625-91fa654744e4
+md"To form collections of related values, use _Dictionaries_ or _Arrays_"
+
+# ╔═╡ 79f18f18-f6b4-11ea-2833-b1bf5cf2adb6
+myArray = [2, 6, 5];
+
+# ╔═╡ 7dd62f6c-f6b4-11ea-391f-df2994da3551
+myDict = Dict("foo" => 3, "bar" => 5, "baz" => 8);
+
+# ╔═╡ d8bca430-f6b5-11ea-085d-839f76472e31
+md"_Arrays_ are accessed by indexing"
+
+# ╔═╡ db5c71e0-f6b5-11ea-2259-01d0e71302d6
+myArray[1];
+
+# ╔═╡ dee751ae-f6b5-11ea-332d-f7fd57b88a3d
+md"_Dictionaries_ are (unordered) collections of (key, value)-pairs, values are retrieved via corresponding key"
+
+# ╔═╡ e6d2f22e-f6b5-11ea-1d89-dda69d6b459c
+myDict["foo"];
 
 # ╔═╡ fb7f685a-f5d0-11ea-13f5-ed782705b7c7
-md"_For-loops_"
+md"###### Loops and control-flow"
+
+# ╔═╡ c89da684-f6b5-11ea-2fa1-43ecc44703f3
+my_arr1 = [4, 5, 6];
 
 # ╔═╡ edf4ea28-f5d2-11ea-02d4-43772be1576a
 my_arr2 = zeros(length(my_arr1));
@@ -240,7 +235,7 @@ end
 my_arr2;
 
 # ╔═╡ 0411bfac-f5d3-11ea-2f0f-a5a2bdce4f65
-md"_Functions_"
+md"###### Functions"
 
 # ╔═╡ 0ed01aec-f5d3-11ea-1ff1-5d2d6e6cad8e
 function double_vals(my_arr1)
@@ -396,15 +391,15 @@ md"""
 begin
 	# x is supposed to be an array like
 	x = [i for i in 1:10]
-	
+
 	function mult3_v1!(x)
 		x .= 3 .* x
 	end
-	
+
 	function mult3_v2!(x)
 		x = 3 * x
 	end
-	
+
 	function mult3_v3!(x)
 		@inbounds for i in 1:length(x)
 			x[i] = 3 * x[i]
@@ -433,7 +428,7 @@ begin
 		x .= 3 .* x
 		x
 	end
-	
+
 	function inplace_v2(x)
 		y = zeros(Int, length(x))
 		y .= 3 .* x
@@ -461,7 +456,7 @@ begin
 		end
 		x
 	end
-	
+
 	function divide_v2()
 		x = 1.0
 		for i in 1:10
@@ -491,7 +486,7 @@ More resources:
 # ╔═╡ 3efacc48-f541-11ea-0625-d1212cac1820
 md"""## 2. Gillespie algorithm
 ###### Simple division process, Julia says 'Challenge accepted!'
-In the following we have a stochastic simulation algorithm for a simple division process of a single cell with exponential division times (Gillespie algorithm). 
+In the following we have a stochastic simulation algorithm for a simple division process of a single cell with exponential division times (Gillespie algorithm).
 
 _Let's check out how Julia code looks like and how fast it is!_
 
@@ -499,7 +494,7 @@ $(PlutoUI.LocalResource("images/gillespie.png", :width => 800))
 """
 
 # ╔═╡ b1ade5f4-f543-11ea-2a29-1fdc5e7acbcb
-begin 
+begin
 	λ = 2.0 # division rate
 	x0 = 1 # initial cell number
 	Δt = 3.0 # time range to simulate
@@ -515,19 +510,22 @@ begin
 			t = 0.0
 
 			# simulate
-			while t < Δt
+			while true
 				# calculate propensity
 				prop = x * λ
 
 				# draw exponential random time for next event
 				τ = rand(Exponential(1.0/prop))
-
+				
+				# store single simulation result
+				if t + τ > Δt
+					res[i] = x
+					break
+				end
+				
 				# update current cell numbers and time
 				x += 1
 				t += τ
-
-			# store single simulation result
-			res[i] = x
 			end
 		end
 		# return result
@@ -572,7 +570,12 @@ Check box to show solution $(@bind gill_sol html"<input type=checkbox >")
 md"## 3. DifferentialEquations.jl"
 
 # ╔═╡ 06d00ba8-f53e-11ea-0954-437217397654
-md"Set up the ODE model:"
+md"""_An ordinary differential equation (ODE) model_
+
+Below you find an ODE model for the famous [Lotka-Volterra](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations) system; an example of pre-ancient theoretical biology (starting around 1910-ish). It describes predator-prey relationships.
+
+$(PlutoUI.LocalResource("images/pred_prey.png", :width => 300))
+"""
 
 # ╔═╡ 125d18a0-f53c-11ea-10c5-8f872fb3a1b6
 function lotka_volterra(du, u, θ, t)
@@ -599,6 +602,9 @@ begin
 	δ = $(δ_slider)"""
 end
 
+# ╔═╡ 469d90cc-f6bd-11ea-25d0-5d91fb1b390e
+[α, β, γ, δ]
+
 # ╔═╡ 3169ab5a-f53c-11ea-20c7-4d9c8a6755ed
 begin
 	θ = [α, β, γ, δ]
@@ -610,9 +616,39 @@ end;
 # ╔═╡ 371a5018-f53c-11ea-336e-c3b7cca672ca
 begin
 	plot(sol_lv, linewidth=4, xlabel="Time", ylabel="Population size",
-		legend=false, grid=false)
+		grid=false)
 	plot!(size=(350,200))
 end
+
+# ╔═╡ 973c748a-f6b8-11ea-35a3-afd13d5cdc20
+md"###### Exercise: 
+- Which variable is prey? Which is predator? 
+- What could the parameters _α_, _β_, _γ_ and _δ_ mean?"
+
+# ╔═╡ 6a3ffd6a-f6ba-11ea-21f7-7db8dbd4c2a8
+md"""
+Check box to show solution $(@bind pacman_sol html"<input type=checkbox >")
+"""
+
+# ╔═╡ 0f776d76-f6b7-11ea-3844-357b88767e4d
+md"_What else does DifferentialEquations.jl offer? Basically everything..._
+- Discrete equations (function maps, discrete stochastic (Gillespie/Markov) simulations)
+- Ordinary differential equations (ODEs)
+- Split and Partitioned ODEs (Symplectic integrators, IMEX Methods)
+- Stochastic ordinary differential equations (SODEs or SDEs)
+- Random differential equations (RODEs or RDEs)
+- Algebraic differential equations (DAEs)
+- Delay differential equations (DDEs)
+- Mixed discrete and continuous equations (Hybrid Equations, Jump Diffusions)
+- (Stochastic) partial differential equations ((S)PDEs) (with both finite difference and finite element methods)
+
+And a whole ecosystem around it ([SciML](https://github.com/SciML)):
+- Parameter estimation
+- Sensitivity analysis
+- Bayesian inference
+- Neural networks + Differential equations
+- ...
+"
 
 # ╔═╡ 4bb6e490-f533-11ea-269b-ef6f31e561c5
 md"
@@ -768,7 +804,7 @@ begin
 	λrate = 2.0 # division rate
 	timespan = 3.0 # time range to simulate
 	datapoints = 20 # number of simulation repeats
-	
+
 	# Gillespie simulations
 	gill_data = gillespie_alg(init_cells, λrate, timespan, datapoints)
 end;
@@ -792,7 +828,7 @@ end;
 
 # ╔═╡ 3fa255be-f611-11ea-351f-ff1c61d0a44c
 begin
-	prob_div = ODEProblem(simple_div_ode, [init_cells], 
+	prob_div = ODEProblem(simple_div_ode, [init_cells],
 							(0.0, timespan), [λrate])
 	sol_div = solve(prob_div, Tsit5())
 end;
@@ -820,7 +856,7 @@ end;
 
 # ╔═╡ 9aa70686-f614-11ea-2767-39ec8e428137
 begin
-	plot(λest_prior, linewidth=4, 
+	plot(λest_prior, linewidth=4,
 		xlabel="λ", ylabel="Probability",
 		label="p(λ)", color=:darkorange)
 	plot!(size=(350,200))
@@ -828,7 +864,7 @@ end
 
 # ╔═╡ 2e082e5c-f616-11ea-1e64-c55552c523df
 begin
-	plot(σ_div_prior, linewidth=4, 
+	plot(σ_div_prior, linewidth=4,
 		xlabel="σ", ylabel="Probability",
 		label="p(σ)", color=:red)
 	plot!(size=(350,200))
@@ -868,11 +904,11 @@ begin
 end
 
 # ╔═╡ 68611d20-f616-11ea-1a48-ff9b9b125b24
-begin 
+begin
 	histogram(chain_div[:λest].data[200:end], color=:darkorange,
 	                normalize=true, label="p(λ | D) [Posterior]",
 	                linecolor=:match);
-	plot!(λest_prior, linewidth=4, 
+	plot!(λest_prior, linewidth=4,
 		xlabel="λ", ylabel="Probability",
 		label="p(λ)", color=:darkorange)
 	plot!(size=(350,200))
@@ -899,8 +935,60 @@ end
 # ╔═╡ 51813362-f619-11ea-16f8-2101534d2881
 # plot(chain_div)
 
-# ╔═╡ 8bfcfde4-f6a2-11ea-1d33-7b7d0b1ab648
-md"""## 6. Further Information and References"""
+# ╔═╡ 08da756c-f51d-11ea-2167-61055a2ba344
+md""" 
+## 6. Further Information and References
+
+### Some valuable links
+- [Julia Website](https://julialang.org/)
+- [Julia Documentation](https://docs.julialang.org/en/v1/)
+- [Julia Discourse Forum](https://discourse.julialang.org/) (ideal for asking questions!)
+- [A concise Julia tutorial](https://syl1.gitbook.io/julia-language-a-concise-tutorial/)
+- [JuliaPro from JuliaComputing](https://juliacomputing.com/products/juliapro) (like a conda installation for Python)
+- [JuliaAcademy](https://juliaacademy.com/) (free course material)
+\
+
+### Editors/Programming Environments for Julia
+
+_Editors_
+- [Juno (in Atom)](https://junolab.org/) (current standard)
+- [VS Code extension](https://github.com/julia-vscode/julia-vscode) (maybe the future standard)
+
+_Notebooks_
+- [Jupyter Lab/Notebook](https://jupyter.org/) (if you have Jupyter already just install [IJulia](https://github.com/JuliaLang/IJulia.jl) on top)
+- [Pluto.jl](https://github.com/fonsp/Pluto.jl) (used here)
+\
+
+### Packages and Ecosystems
+
+Larger ecosystems
+- [SciML](https://github.com/SciML) - _Open Source Scientific Machine Learning_
+- [The Turing Language](https://github.com/TuringLang) - _Bayesian inference with probabilistic programming_
+- [Flux](https://github.com/FluxML/Flux.jl) - _Pure-Julia approach to machine learning with Julia's native GPU and AD support_
+- [JuliaStats](https://github.com/JuliaStats) - _Statistics and Machine Learning made easy in Julia_
+- [BioJulia](https://github.com/BioJulia) - _Bioinformatics and Computational Biology in Julia_
+- [JuliaGraphs](https://github.com/JuliaGraphs) - _Graph modeling and analysis packages for Julia_
+- [JuMP](https://github.com/jump-dev/JuMP.jl) - _Modeling language for Mathematical Optimization_
+- [JuliaIO](https://github.com/JuliaIO) - _Group for a unified IO infrastructure_
+
+More particular packages (sometimes part of ecosystems above)
+- [DifferentialEquations](https://github.com/SciML/DifferentialEquations.jl) - _Multi-language suite for high-performance solvers of differential equations_
+- [DataFrames](https://github.com/JuliaData/DataFrames.jl) - _In-memory tabular data in Julia_
+- [Distributions](https://github.com/JuliaStats/Distributions.jl) - _Julia package for probability distributions and associated functions_
+- [Zygote](https://github.com/FluxML/Zygote.jl) - _next-gen automatic differentiation (AD) system for source-to-source AD in Julia_
+- [KissABC](https://github.com/JuliaApproxInference/KissABC.jl) - _Pure julia implementation for efficient Approximate Bayesian Computation_
+- [NestedSamplers](https://github.com/TuringLang/NestedSamplers.jl) - _Implementations of single and multi-ellipsoid nested sampling_
+
+Performance packages
+- [BenchmarkTools](https://github.com/JuliaCI/BenchmarkTools.jl) - _A benchmarking framework for the Julia language_
+- [ProfileView](https://github.com/timholy/ProfileView.jl) - _Visualization of Julia profiling data_
+
+Notebooks/Visualisation
+- [Plots](https://github.com/JuliaPlots/Plots.jl) - _Powerful convenience for Julia visualizations and data analysis_
+- [Pluto](https://github.com/fonsp/Pluto.jl) - _Lightweight reactive notebooks for Julia_
+- [IJulia](https://github.com/JuliaLang/IJulia.jl) - _Julia kernel for Jupyter_
+
+"""
 
 # ╔═╡ ead9e534-f620-11ea-18c6-b356e37fe51a
 md"""
@@ -925,7 +1013,7 @@ md"""
 # ╔═╡ 135fff12-f69f-11ea-3f00-45aa2f5c340b
 begin
 	md"""### Presenter's notes
-	
+
 	_Time management_
 	1) Introduction to Julia **18 min.**
 	2) Performance tips and a Gillespie algorithm **18 min.**
@@ -951,16 +1039,16 @@ begin
 end
 
 # ╔═╡ 30f297be-f6a3-11ea-0509-6db3c3648a8b
-begin 
+begin
 	almost(text) = Markdown.MD(Markdown.Admonition("warning", " ", [text]));
 
 
 	keep_working(text=md"The answer is not quite right.") = Markdown.MD(Markdown.Admonition("danger", "", [text]));
 
 	correct(text=md"Great! You got the right answer! Let's move on to the next section.") = Markdown.MD(Markdown.Admonition("correct", "Solution", [text]));
-	
+
 	pizzas=4
-	
+
 	if pizzas == 4
 		correct(md"Yes that is right, that's a lot of pizza! Excellent, you figured out we need to round up the number of pizzas!")
 	else
@@ -974,7 +1062,7 @@ if perf_sol_1
 		v1: `18.992 μs (0 allocations: 0 bytes)`\
 v2: `46.368 μs (2 allocations: 781.33 KiB)`\
 v3: `19.052 μs (0 allocations: 0 bytes)`
-		
+
 Why? First of all, for-loops are fast in Julia (unlike Python, R, ...)! Thus v3 is as fast as the correctly vectorised/fused version v1 (which actually compiles down to the same for-loop as in v3). v2 is slower because it requires memory allocations to save the intermediate results for all indices (`3*x`) before referencing them to `x` again.
 		")
 else
@@ -1004,8 +1092,15 @@ end
 
 # ╔═╡ 2bb71a58-f5f7-11ea-093e-43fd313917f3
 if gill_sol
-	correct(md"With `n = 10000` repeats, the Julia version runs with about `39.343 ms (2 allocations: 78.20 KiB)`. A Python version of the same code required about 
+	correct(md"With `n = 10000` repeats, the Julia version runs with about `39.343 ms (2 allocations: 78.20 KiB)`. A Python version of the same code required about
 		8.3 seconds, thus Julia is over 200 times faster!")
+else
+	almost(md"You will do it!")
+end
+
+# ╔═╡ 6b2dbf0a-f6ba-11ea-37b7-f32440c09b60
+if pacman_sol
+	correct(md"`x` is the number of prey (for example, rabbits); `y` is the number of predator (for example, foxes); α reproduction rate of prey; β predation rate; γ predator death rate; δ reproduction rate of predator per prey.")
 else
 	almost(md"You will do it!")
 end
@@ -1054,14 +1149,24 @@ end
 # ╟─38bcd576-f69f-11ea-04b6-5b497457c85a
 # ╟─37109e76-f5c1-11ea-196d-99c2ac49a062
 # ╟─aa95fe4e-f5c2-11ea-08e3-715fd74b8947
-# ╟─4f2e9298-f525-11ea-3cd5-49818ec23f80
-# ╟─03edbb50-f526-11ea-097c-7d606d1b7549
-# ╟─08da756c-f51d-11ea-2167-61055a2ba344
 # ╟─7575f402-f5d0-11ea-05f4-75eb4096930d
-# ╟─82b251da-f5d0-11ea-1b55-23b0c17fb54b
-# ╠═b5198710-f5d0-11ea-3c86-9506e4759964
-# ╠═e3a77844-f5d0-11ea-3264-f39d4317a0af
+# ╟─fb7d2fc8-f6b5-11ea-2d3d-c566c4292a4c
+# ╠═065885ca-f6b4-11ea-39ee-bbca217e81d7
+# ╠═0766c508-f6b4-11ea-2776-d100ed8c4b7e
+# ╟─1c0dde9c-f6b4-11ea-38d9-af2e85e6dad9
+# ╠═2341a2b6-f6b4-11ea-3946-97e162f449ce
+# ╠═280b5d30-f6b4-11ea-32bf-4dd537092235
+# ╟─5fd479ec-f6b4-11ea-199f-630771b2dac3
+# ╠═63bad2e0-f6b4-11ea-24dc-c93e9fec1259
+# ╟─6ef88076-f6b4-11ea-2625-91fa654744e4
+# ╠═79f18f18-f6b4-11ea-2833-b1bf5cf2adb6
+# ╠═7dd62f6c-f6b4-11ea-391f-df2994da3551
+# ╟─d8bca430-f6b5-11ea-085d-839f76472e31
+# ╠═db5c71e0-f6b5-11ea-2259-01d0e71302d6
+# ╟─dee751ae-f6b5-11ea-332d-f7fd57b88a3d
+# ╠═e6d2f22e-f6b5-11ea-1d89-dda69d6b459c
 # ╟─fb7f685a-f5d0-11ea-13f5-ed782705b7c7
+# ╠═c89da684-f6b5-11ea-2fa1-43ecc44703f3
 # ╠═edf4ea28-f5d2-11ea-02d4-43772be1576a
 # ╠═6f18bc2a-f5d2-11ea-12c3-875a26c75ef6
 # ╠═da13abe8-f5d2-11ea-1614-afd878920560
@@ -1134,8 +1239,13 @@ end
 # ╟─06d00ba8-f53e-11ea-0954-437217397654
 # ╠═125d18a0-f53c-11ea-10c5-8f872fb3a1b6
 # ╟─ba08c824-f53c-11ea-102e-89474ff586c1
+# ╠═469d90cc-f6bd-11ea-25d0-5d91fb1b390e
 # ╠═3169ab5a-f53c-11ea-20c7-4d9c8a6755ed
 # ╟─371a5018-f53c-11ea-336e-c3b7cca672ca
+# ╟─973c748a-f6b8-11ea-35a3-afd13d5cdc20
+# ╟─6a3ffd6a-f6ba-11ea-21f7-7db8dbd4c2a8
+# ╟─6b2dbf0a-f6ba-11ea-37b7-f32440c09b60
+# ╟─0f776d76-f6b7-11ea-3844-357b88767e4d
 # ╟─4bb6e490-f533-11ea-269b-ef6f31e561c5
 # ╟─ba139b34-f5fd-11ea-3a81-6d7937c50945
 # ╠═e57c6d64-f5e2-11ea-3c20-a787e4ea581e
@@ -1175,7 +1285,7 @@ end
 # ╟─68611d20-f616-11ea-1a48-ff9b9b125b24
 # ╟─b5967680-f61b-11ea-29ff-e151fd817baf
 # ╠═51813362-f619-11ea-16f8-2101534d2881
-# ╠═8bfcfde4-f6a2-11ea-1d33-7b7d0b1ab648
+# ╟─08da756c-f51d-11ea-2167-61055a2ba344
 # ╟─ead9e534-f620-11ea-18c6-b356e37fe51a
 # ╟─030c9e10-f61e-11ea-2080-1325c8e8cd3b
 # ╟─135fff12-f69f-11ea-3f00-45aa2f5c340b

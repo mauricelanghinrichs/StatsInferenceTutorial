@@ -18,32 +18,35 @@ const Δt = 3.0
 const n = 10000
 
 function gillespie_alg(x0, λ, Δt, n)
-    # preallocate result array
-    res = zeros(Int, n)
+	# preallocate result array
+	res = zeros(Int, n)
 
-    for i=1:n
-        # current cell numbers and current time
-        x = x0
-        t = 0.0
+	for i=1:n
+		# current cell numbers and current time
+		x = x0
+		t = 0.0
 
-        # simulate
-        while t < Δt
-            # calculate propensity
-            prop = x * λ
+		# simulate
+		while true
+			# calculate propensity
+			prop = x * λ
 
-            # draw exponential random time for next event
-            τ = rand(Exponential(1.0/prop))
+			# draw exponential random time for next event
+			τ = rand(Exponential(1.0/prop))
 
-            # update current cell numbers and time
-            x += 1
-            t += τ
+			# store single simulation result
+			if t + τ > Δt
+				res[i] = x
+				break
+			end
 
-        # store single simulation result
-        res[i] = x
-        end
-    end
-    # return result
-    res
+			# update current cell numbers and time
+			x += 1
+			t += τ
+		end
+	end
+	# return result
+	res
 end
 
 const res = gillespie_alg(x0, λ, Δt, n)

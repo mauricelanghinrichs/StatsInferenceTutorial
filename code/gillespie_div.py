@@ -24,19 +24,22 @@ def gillespie_alg(x0, λ, Δt, n):
         t = 0.0
 
         # simulate
-        while t < Δt:
+        while True:
             # calculate propensity
             prop = x * λ
 
             # draw exponential random time for next event
             τ = np.random.exponential(1.0/prop)
 
+            # store single simulation result
+            if t + τ > Δt:
+                res[i] = x
+                break
+
             # update current cell numbers and time
             x += 1
             t += τ
 
-        # store single simulation result
-        res[i] = x
     # return result
     return res
 
