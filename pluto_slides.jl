@@ -13,9 +13,10 @@ macro bind(def, element)
     end
 end
 
-# ╔═╡ bbce8a94-f52b-11ea-2f02-5bb0f8fe7ef3
+# ╔═╡ 3d9f3eec-f665-11ea-2b71-678afc915989
 begin
-	# all packages go here
+	# import packages
+	using Pkg
 	using Distributions
 	using Turing
 	using DifferentialEquations
@@ -24,7 +25,6 @@ begin
 	using Plots
 	using StatsPlots
 	using BenchmarkTools
-	using Pkg
 end
 
 # ╔═╡ 350c6846-f52e-11ea-2c8e-69d7aaadebbe
@@ -43,14 +43,15 @@ md""" $(PlutoUI.LocalResource("images/julialogo.png", :width => 100))"""
 
 # ╔═╡ 2d1f4f7a-f52b-11ea-0c75-cd873132c58d
 begin
-	poi_slider = @bind lambda html"<input type='range' min='1' max='20' step='1' value='10'>"
+	λintro = 10
+	poi_slider = @bind λintro html"<input type='range' min='1' max='20' step='1' value='10'>"
 
 	md"Poisson parameter: $(poi_slider)"
 end
 
 # ╔═╡ 89dfcfaa-f52b-11ea-3c7b-19f39cc8404c
 begin
-	intro_data = rand(Poisson(lambda), 20)
+	intro_data = rand(Poisson(λintro), 20)
 	histogram(intro_data,
 		bins=range(-0.5, 24.5, step=1), normalize=true,
 		color=:dodgerblue, linecolor=:match, label="Data")
@@ -75,7 +76,7 @@ md"""
 md"""
 _Tutorial requirements_ (the complete process might take ~30 min.)
 1. [Julia installation](https://julialang.org/downloads/)
-2. [Atom and Juno (the Julia editor)](http://docs.junolab.org/latest/man/installation/)
+2. Optional: [Atom and Juno (the Julia editor)](http://docs.junolab.org/latest/man/installation/)
 3. Julia packages listed below:
 """
 
@@ -1050,7 +1051,7 @@ md"""
 
 # ╔═╡ Cell order:
 # ╟─350c6846-f52e-11ea-2c8e-69d7aaadebbe
-# ╟─bbce8a94-f52b-11ea-2f02-5bb0f8fe7ef3
+# ╟─3d9f3eec-f665-11ea-2b71-678afc915989
 # ╟─f3c20672-f51c-11ea-3303-cd9b65133594
 # ╟─07d67ae4-f51d-11ea-0cbb-03e935785aa8
 # ╟─ef2a7010-f547-11ea-264d-fd7f2110f5b5
