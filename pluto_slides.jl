@@ -307,7 +307,7 @@ subtypes(AbstractFloat);
 md"_Build your own types_"
 
 # ╔═╡ bfa5ddd6-f539-11ea-0c3b-1fd74faabeb1
-abstract type Person end
+abstract type Person end;
 
 # ╔═╡ bfac62ae-f539-11ea-0779-49c930964691
 struct Professor<:Person
@@ -337,6 +337,9 @@ md"_+ is a function in Julia with many different versions (called methods)_"
 
 # ╔═╡ 636f2bd6-f5d5-11ea-3bb2-291598e50a49
 +;
+
+# ╔═╡ 5afbaa4a-f73a-11ea-21fb-d97cede4684f
++(2, 3) == 2 + 3;
 
 # ╔═╡ 9c598a9a-f5d5-11ea-39f6-9b979b95c256
 @which 1 + 2;
@@ -683,7 +686,7 @@ md"Define a prior:"
 # ╔═╡ 43950fba-f5fd-11ea-1129-9b241561e88c
 begin
 	gamma_α = 5
-	λ_poi_prior = Gamma(gamma_α, 1)
+	λ_poi_prior = Gamma(gamma_α, 1) # Uniform(0, 20) # Uniform(0, 5)
 end;
 
 # ╔═╡ bec8e190-f533-11ea-2435-71f946622b6f
@@ -804,7 +807,7 @@ begin
 	init_cells = 1 # initial cell number
 	λrate = 2.0 # division rate
 	timespan = 3.0 # time range to simulate
-	datapoints = 20 # number of simulation repeats
+	datapoints = 40 # number of simulation repeats
 
 	# Gillespie simulations
 	gill_data = gillespie_alg(init_cells, λrate, timespan, datapoints)
@@ -833,7 +836,8 @@ Check box to show solution $(@bind div_check_sol1 html"<input type=checkbox >")
 # ╔═╡ 029e6272-f611-11ea-2790-89643a23244b
 function simple_div_ode(du, u, θ, t)
     ### ADD YOUR CODE HERE (replace nothing)
-	nothing
+	# nothing
+	du[1] = θ[1] * u[1]
 end;
 
 # ╔═╡ 3fa255be-f611-11ea-351f-ff1c61d0a44c
@@ -899,7 +903,9 @@ begin
 		μdiv = solve(prob,Tsit5(), save_everystep=false)
 
 		for i in 1:length(gill_data)
-			gill_data[i] ~ nothing ### ADD YOUR CODE HERE (replace nothing)
+			### ADD YOUR CODE HERE (replace nothing)
+			# nothing
+			gill_data[i] ~ Normal(μdiv[2][1], σdiv)
 		end
 	end
 end;
@@ -921,7 +927,7 @@ begin
 	                linecolor=:match);
 	plot!(σ_div_prior, linewidth=4,
 		xlabel="σ", ylabel="Probability",
-		label="p(σ)", color=:red)
+		label="p(σ) [Prior]", color=:red)
 	plot!(size=(350,200))
 end
 
@@ -932,7 +938,7 @@ begin
 	                linecolor=:match);
 	plot!(λest_prior, linewidth=4,
 		xlabel="λ", ylabel="Probability",
-		label="p(λ)", color=:darkorange)
+		label="p(λ) [Prior]", color=:darkorange)
 	plot!(size=(350,200))
 end
 
@@ -1238,6 +1244,7 @@ end
 # ╟─5e03ea98-f5d4-11ea-153b-675bbcb96db8
 # ╟─aa0ff2c6-f5d4-11ea-384d-a755ddf9c74d
 # ╠═636f2bd6-f5d5-11ea-3bb2-291598e50a49
+# ╠═5afbaa4a-f73a-11ea-21fb-d97cede4684f
 # ╠═9c598a9a-f5d5-11ea-39f6-9b979b95c256
 # ╠═a53bb566-f5d5-11ea-13f4-05fb39073a0c
 # ╠═05f26410-f5d6-11ea-37c4-f34c9fde0d5d
@@ -1277,7 +1284,7 @@ end
 # ╟─ba08c824-f53c-11ea-102e-89474ff586c1
 # ╠═469d90cc-f6bd-11ea-25d0-5d91fb1b390e
 # ╠═3169ab5a-f53c-11ea-20c7-4d9c8a6755ed
-# ╟─371a5018-f53c-11ea-336e-c3b7cca672ca
+# ╠═371a5018-f53c-11ea-336e-c3b7cca672ca
 # ╟─973c748a-f6b8-11ea-35a3-afd13d5cdc20
 # ╟─6a3ffd6a-f6ba-11ea-21f7-7db8dbd4c2a8
 # ╟─6b2dbf0a-f6ba-11ea-37b7-f32440c09b60
@@ -1293,7 +1300,7 @@ end
 # ╟─ebc69e62-f53d-11ea-0e3d-4b66434f2a1a
 # ╠═2befcf68-f534-11ea-1507-9dd8e6d7dc8b
 # ╟─f860a12c-f53d-11ea-0a1f-41a6316cca01
-# ╟─0105a34c-f534-11ea-3b4a-234436973165
+# ╠═0105a34c-f534-11ea-3b4a-234436973165
 # ╟─755b4af6-f534-11ea-239c-03b4eb8672af
 # ╟─7086f572-f534-11ea-0cd0-0fc9d6f2a56d
 # ╟─21787c78-f60c-11ea-2ece-a7002bb43929
